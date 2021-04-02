@@ -32,17 +32,12 @@ namespace SalesTax.BL
         /// <returns></returns>
         public Product Process(string line)
         {
-            string regexPattern = "(\\d+) ([\\w\\s]* )at (\\d+.\\d{2})";
+            string rawQuantity;
+            string rawName;
+            string rawPrice;
 
-            MatchCollection matches = Regex.Matches(line, regexPattern);
-
-
-            if (matches.Count >= 1)
+            if (GetProductRawValues(line, out rawQuantity, out rawName, out rawPrice))
             {
-                string rawQuantity = matches[0].Groups[1].Value;
-                string rawName = matches[0].Groups[2].Value.Trim();
-                string rawPrice = matches[0].Groups[3].Value;
-
                 if (int.TryParse(rawQuantity, out int quantity) && decimal.TryParse(rawPrice, out decimal price))
                 {
                     Product output = ProductBuilder.Create();
@@ -65,6 +60,32 @@ namespace SalesTax.BL
             }
 
             throw new FormatException("Product line format not valid");
+        }
+
+        /// <summary>
+        /// Returns string product values from processed string
+        /// </summary>
+        /// <param name="line">Product string value</param>
+        /// <param name="rawQuantity">Returns quantity value from string. If invalid value returns null</param>
+        /// <param name="rawName">Returns name value from string. If invalid value returns null</param>
+        /// <param name="rawPrice">Returns price value from string. If invalid value returns null</param>
+        /// <returns></returns>
+        public bool GetProductRawValues(string line, out string rawQuantity, out string rawName, out string rawPrice)
+        {
+            string regexPattern = "^([1-9]+) ([\\w\\s]*) at (\\d+.\\d{2})$";
+            bool output = false;
+
+            rawQuantity = rawName = rawPrice = null;
+
+            MatchCollection matches = Regex.Matches(line, regexPattern);
+            if (matches.Count >= 1)
+            {
+                rawQuantity = matches[0].Groups[1].Value;
+                rawName = matches[0].Groups[2].Value;
+                rawPrice = matches[0].Groups[3].Value;
+                output = true;
+            }
+            return output;
         }
 
         /// <summary>

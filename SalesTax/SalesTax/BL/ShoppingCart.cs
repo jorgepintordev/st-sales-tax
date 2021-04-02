@@ -37,11 +37,11 @@ namespace SalesTax.BL
             }
 
             //Print Sales Taxes
-            output.Append($"Sales Taxes: {tax.ToString("#.00")}{Environment.NewLine}");
+            output.Append($"Sales Taxes: {tax.ToString("0.00")}{Environment.NewLine}");
 
 
             //Print Total
-            output.Append($"Total: {total.ToString("#.00")}");
+            output.Append($"Total: {total.ToString("0.00")}");
 
             return output.ToString();
         }

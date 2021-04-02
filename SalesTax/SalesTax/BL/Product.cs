@@ -101,5 +101,23 @@ namespace SalesTax.BL
 
             return output;
         }
+
+        /// <summary>
+        /// Returns class name for SaleTax interface. For unit testing
+        /// </summary>
+        /// <returns></returns>
+        public string GetSaleTaxType()
+        {
+            return _saleTax.GetType().Name;
+        }
+
+        /// <summary>
+        /// Returns class name for ImportTax interface. For unit testing
+        /// </summary>
+        /// <returns></returns>
+        public string GetImportTaxType()
+        {
+            return _importTax.GetType().Name;
+        }
     }
 }
